@@ -1,14 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const eventlist = document.getElementById("events_list")
-  const topbar = document.getElementById('top_bar')
+  const eventList = document.getElementById("events_list")
+  const eventButton = document.getElementById("event-creation-button")
+  
 
-  fetchData(BASE_URL, eventlist)
+
+  fetchData(BASE_URL, eventList)
+
+  eventButton.addEventListener('click',createEvent)
+
+  
 })
 
-
 const BASE_URL = "http://localhost:3000/events"
-// const eventData = fetchData(BASE_URL)
-
 
 function fetchData(url, eventlist) {
   fetch(url)
@@ -18,7 +21,6 @@ function fetchData(url, eventlist) {
     generateEvents(data, eventlist)
   })
 }
-
 
 function generateEvents(data, eventlist) {
   // Iterating through each event
@@ -46,55 +48,32 @@ function generateEvents(data, eventlist) {
     eventlist.appendChild(eventContainer)
   })
 }
+
 // User generated event
 function createEvent() {
-  // Build form div
+  // Get full page div
+  let fullPage = document.getElementById('full-page')
+  let body = document.querySelector('body')
+  //create form div
   let formDiv = document.createElement('div')
-  formDiv.id = "formdiv"
-  // Build form
-  let form = document.createElement('form')
-  form.id = "event-creation-form"
-  // Create Labels
-  let formName = document.createElement('label')
-  forNname.className = "form-label"
-  let formImage = document.createElement('label')
-  formImage.className = "form-label"
-  let formDate = document.createElement('label')
-  formDate.className = "form-label"
-  let formDescription = document.createElement('label')
-  formDescription.className = "form-label"
-  // Create inputs
-  let formNameInput = document.createElement('input')
-  formNameInput.type = "text"
-  formNameInput.className = "form-input"
-  let formImageInput = document.createElement('input')
-  formImageInput.type = "text"
-  formImageInput.className = "form-input"
-  let formDateInput = document.createElement('input')
-  formDateInput.type = "text"
-  formDateInput.className = "form-input"
-  let formDescriptionInput = document.createElement('input')
-  formDescriptionInput.type = "text"
-  formDescriptionInput.className = "form-input"
-  // Create submit button
-  let formsubmission = document.createElement('input')
-  formsubmission.type = "submit"
-  // Bring form together
-  form.appendChild(formName)
-  form.appendChild(formNameInput)
-  form.appendChild(formImage)
-  form.appendChild(formImageInput)
-  form.appendChild(formDate)
-  form.appendChild(formDateInput)
-  form.appendChild(formDescription)
-  form.appendChild(formDescriptionInput)
-  // Append form to formDiv
-  formDiv.appendChild(form)
-  // Append formDiv to document
-  document.appendChild(formDiv)
+  formDiv.id = "form-div"
 
-  // Add values to Event
-  let newEvent = new Event(name, image, date, description)
+  formDiv.innerHTML = `<form id="event-creation-form">
+                      <label id="formName">Event Name:</label><br>
+                      <input type="text" id="formNameInput"><br>
+                      <label id="formImage">Event Image Link:</label><br>
+                      <input type="text" id="formImageInput"><br>
+                      <label id="formDate">Event Date:</label><br>
+                      <input type="text" id="formDateInput"><br>
+                      <label id="formDescription">Event Description</label><br>
+                      <input type="text" id="formDescriptionInput"><br>
+                      <input type="submit">
+                      </form>`
+  // append div
+  body.append(formDiv)
+  fullPage.className = "blurred"
+  // // Add values to Event
+  // let newEvent = new Event(name, image, date, description)
   
 }
 
