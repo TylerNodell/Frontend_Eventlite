@@ -35,23 +35,32 @@ function generateEvents(data) {
   data.forEach( element => {
     // Creating the card div
     let eventContainer = document.createElement('div')
-    eventContainer.className = "event-card"
+    eventContainer.className = "card"
+    eventContainer.style.width = "40%"
     // Creating the image
     let eventImage = document.createElement('img')
     eventImage.src = element.img;
-    eventImage.className = "event-image"
+    eventImage.className = "card-img-top"
     // Creating the name
+    let cardText = document.createElement('div')
+    cardText.className = "card-body"
     let eventName = document.createElement('h3')
     eventName.innerText = element.name;
-    eventName.className = "event-name"
+    eventName.className = "card-title"
     // Creating the date
     let eventDate = document.createElement('h4')
     eventDate.innerText = element.date
-    eventDate.className = "event-date"
+    eventDate.className = "card-text"
     // Appending attributes to the card div
     eventContainer.appendChild(eventImage)
-    eventContainer.appendChild(eventName)
-    eventContainer.appendChild(eventDate)
+    cardText.appendChild(eventName)
+    cardText.appendChild(eventDate)
+    let eventLink = document.createElement('a')
+    eventLink.className = "btn btn-primary"
+    eventLink.href = "#"
+    eventLink.innerText = "Checkout Event"
+    cardText.appendChild(eventLink)
+    eventContainer.appendChild(cardText)
     // Append the card div to the event list
     eventList.appendChild(eventContainer)
   })
@@ -67,18 +76,19 @@ function createEventForm() {
   //create form div
   let formDiv = document.createElement('div')
   formDiv.id = "form-div"
+  formDiv.className = "container"
 
   formDiv.innerHTML = `<h2 id="form-header">Create your event</h2>
-                      <form id="event-creation-form">
+                      <form id="event-creation-form" class="form-group">
                       <label id="formName">Event Name:</label><br>
-                      <input type="text" id="formNameInput"><br>
+                      <input type="text" class="form-control" id="formNameInput"><br>
                       <label id="formImage">Event Image Link:</label><br>
-                      <input type="text" id="formImageInput"><br>
+                      <input type="text" class="form-control" id="formImageInput"><br>
                       <label id="formDate">Event Date:</label><br>
-                      <input type="text" id="formDateInput"><br>
+                      <input type="text" class="form-control" id="formDateInput"><br>
                       <label id="formDescription">Event Description</label><br>
-                      <input type="text" id="formDescriptionInput"><br>
-                      <input type="submit">
+                      <input type="text" class="form-control" id="formDescriptionInput"><br>
+                      <button type="submit" class="btn btn-primary">Submit</button>
                       </form>`
   // append div
   body.append(formDiv)
