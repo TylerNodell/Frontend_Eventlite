@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
   const eventButton = document.getElementById("event-creation-button")
-  
+
 
 
   fetchData(BASE_URL)
 
   eventButton.addEventListener('click',createEventForm)
 
- 
-  
+
+
 })
 
-const BASE_URL = "http://localhost:3000/events"
+const BASE_URL = "http://localhost:3000/api/v1/events"
 
 function fetchData(url) {
   fetch(url)
@@ -30,15 +30,16 @@ function generateEvents(data) {
   mainPage.id = "main-page"
   let eventList = document.createElement('div')
   eventList.id = "event-list"
-  
+
   // Iterating through each event
   data.forEach( element => {
+    console.log(element)
     // Creating the card div
     let eventContainer = document.createElement('div')
     eventContainer.className = "event-card"
     // Creating the image
     let eventImage = document.createElement('img')
-    eventImage.src = element.img;
+    eventImage.src = element.image_url;
     eventImage.className = "event-image"
     // Creating the name
     let eventName = document.createElement('h3')
@@ -86,7 +87,7 @@ function createEventForm() {
 
   let form = document.getElementById('event-creation-form');
   let eventList = document.getElementById('event-list')
-  
+
   form.addEventListener('submit', (e) => {
     debugger
     let formName = document.getElementById('formNameInput').value;
@@ -100,7 +101,7 @@ function createEventForm() {
           'Content-Type': 'application/json'
         },
         method:"POST",
-        body: JSON.stringify({name: formName, img: formImage, date: formDate, description: formDescription})
+        body: JSON.stringify({name: formName, image_url: formImage, date: formDate, description: formDescription})
       })
       .then(() =>{
         fullPage.className = ""
@@ -108,7 +109,7 @@ function createEventForm() {
         eventList.innerHTML = ""
         fetchData(BASE_URL)
       })
-    
+
   })
 
 }

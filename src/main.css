@@ -104,7 +104,7 @@
   background-color: aliceblue;
   border: 2px solid black;
   border-radius: 25px;
-  justify-content: space-around;
+  /* justify-content: space-around; */
 }
 
 #event-creation-form {
