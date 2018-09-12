@@ -124,11 +124,21 @@
       "id": 9
     },
     {
-      "name": "Madeon",
-      "img": "https://i.ytimg.com/vi/HQnC1UHBvWA/maxresdefault.jpg",
-      "date": "gsad",
-      "description": "asdg",
+
+      "name": "",
+      "img": "",
+      "date": "",
+      "description": "",
       "id": 10
+    },
+    {
+      "name": "new event",
+      "img": "https://www.technobugg.com/wp-content/uploads/2016/05/Be-updated-with-latest-events-and-happenings-of-your-city.jpg",
+      "date": "10/03/2001",
+      "description": "partay",
+      "id": 11
+
+
     }
   ]
 }
