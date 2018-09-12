@@ -1,28 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const eventList = document.getElementById("events_list")
   const eventButton = document.getElementById("event-creation-button")
   
 
 
-  fetchData(BASE_URL, eventList)
+  fetchData(BASE_URL)
 
-  eventButton.addEventListener('click',createEvent)
+  eventButton.addEventListener('click',createEventForm)
 
+ 
   
 })
 
 const BASE_URL = "http://localhost:3000/events"
 
-function fetchData(url, eventlist) {
+function fetchData(url) {
   fetch(url)
   .then((resp) => resp.json())
   .then((data) => {
     console.log(data)
-    generateEvents(data, eventlist)
+    generateEvents(data)
   })
 }
 
-function generateEvents(data, eventlist) {
+function generateEvents(data) {
+  // Getting outer div
+  let fullPage = document.getElementById('full-page')
+  // Creating container divs
+  let mainPage = document.createElement('div')
+  mainPage.id = "main-page"
+  let eventList = document.createElement('div')
+  eventList.id = "event-list"
+  
   // Iterating through each event
   data.forEach( element => {
     // Creating the card div
@@ -45,12 +53,14 @@ function generateEvents(data, eventlist) {
     eventContainer.appendChild(eventName)
     eventContainer.appendChild(eventDate)
     // Append the card div to the event list
-    eventlist.appendChild(eventContainer)
+    eventList.appendChild(eventContainer)
   })
+  mainPage.appendChild(eventList)
+  fullPage.appendChild(mainPage)
 }
 
 // User generated event
-function createEvent() {
+function createEventForm() {
   // Get full page div
   let fullPage = document.getElementById('full-page')
   let body = document.querySelector('body')
@@ -58,7 +68,8 @@ function createEvent() {
   let formDiv = document.createElement('div')
   formDiv.id = "form-div"
 
-  formDiv.innerHTML = `<form id="event-creation-form">
+  formDiv.innerHTML = `<h2 id="form-header">Create your event</h2>
+                      <form id="event-creation-form">
                       <label id="formName">Event Name:</label><br>
                       <input type="text" id="formNameInput"><br>
                       <label id="formImage">Event Image Link:</label><br>
@@ -72,9 +83,34 @@ function createEvent() {
   // append div
   body.append(formDiv)
   fullPage.className = "blurred"
-  // // Add values to Event
-  // let newEvent = new Event(name, image, date, description)
+
+  let form = document.getElementById('event-creation-form');
+  let eventList = document.getElementById('event-list')
   
+  form.addEventListener('submit', (e) => {
+    debugger
+    let formName = document.getElementById('formNameInput').value;
+    let formImage = document.getElementById('formImageInput').value;
+    let formDate = document.getElementById('formDateInput').value;
+    let formDescription = document.getElementById('formDescriptionInput').value;
+    fetch(BASE_URL,
+      {
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method:"POST",
+        body: JSON.stringify({name: formName, img: formImage, date: formDate, description: formDescription})
+      })
+      .then(() =>{
+        fullPage.className = ""
+        body.removeChild(formDiv)
+        eventList.innerHTML = ""
+        fetchData(BASE_URL)
+      })
+    
+  })
+
 }
 
 // eventlist{
