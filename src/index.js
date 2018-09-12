@@ -1,7 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
   const eventButton = document.getElementById("event-creation-button")
 
+  const showPageContainer = document.createElement('div')
 
+  const attendeeBar = document.createElement('div')
+
+  const attendeeTitle = document.createElement('div')
+  attendeeTitle.innerText = 'Attendees'
+
+  const rsvpDiv = document.createElement('div')
+  rsvpDiv.innerHTML = `<button id="rsvp-btn">RSVP Now</button>`
+
+  const attendeeList = document.createElement('div')
 
   fetchData(BASE_URL)
 
@@ -23,6 +33,7 @@ function fetchData(url) {
 }
 
 function generateEvents(data) {
+
   // Getting outer div
   let fullPage = document.getElementById('full-page')
   // Creating container divs
@@ -33,12 +44,13 @@ function generateEvents(data) {
 
   // Iterating through each event
   data.forEach( element => {
-    console.log(element)
+    // console.log(element)
     // Creating the card div
     let eventContainer = document.createElement('div')
     eventContainer.className = "event-card"
     // Creating the image
     let eventImage = document.createElement('img')
+    console.log(element.image_url)
     eventImage.src = element.image_url;
     eventImage.className = "event-image"
     // Creating the name
@@ -58,7 +70,24 @@ function generateEvents(data) {
   })
   mainPage.appendChild(eventList)
   fullPage.appendChild(mainPage)
+  attendeeList(data)
 }
+
+// everything you need to know about ATTENDEES
+
+function attendeeList(data){
+  data.forEach(events=>{
+    events.attendees.forEach(attendee=>{
+      const attendeeListItem = document.createElement('div')
+      attendeeListItem.innerHTML =
+      `<img src="${attendee.image_url}" alt="${attendee.name}">
+      <h3>${attendee.name}</h3>`
+      attendeeList.appendChild(attendeeListItem)
+    })
+  })
+}
+
+
 
 // User generated event
 function createEventForm() {
@@ -89,7 +118,7 @@ function createEventForm() {
   let eventList = document.getElementById('event-list')
 
   form.addEventListener('submit', (e) => {
-    debugger
+    // debugger
     let formName = document.getElementById('formNameInput').value;
     let formImage = document.getElementById('formImageInput').value;
     let formDate = document.getElementById('formDateInput').value;
