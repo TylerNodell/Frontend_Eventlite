@@ -1,17 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
   const eventButton = document.getElementById("event-creation-button")
-  
 
+  const showPageContainer = document.createElement('div')
+
+  const attendeeBar = document.createElement('div')
+
+  const attendeeTitle = document.createElement('div')
+  attendeeTitle.innerText = 'Attendees'
+
+  const rsvpDiv = document.createElement('div')
+  rsvpDiv.innerHTML = `<button id="rsvp-btn">RSVP Now</button>`
+
+  const attendeeList = document.createElement('div')
 
   fetchData(BASE_URL)
 
   eventButton.addEventListener('click',createEventForm)
 
- 
-  
+
+
 })
 
-const BASE_URL = "http://localhost:3000/events"
+const BASE_URL = "http://localhost:3000/api/v1/events"
 
 function fetchData(url) {
   fetch(url)
@@ -23,6 +33,7 @@ function fetchData(url) {
 }
 
 function generateEvents(data) {
+
   // Getting outer div
   let fullPage = document.getElementById('full-page')
   // Creating container divs
@@ -30,17 +41,21 @@ function generateEvents(data) {
   mainPage.id = "main-page"
   let eventList = document.createElement('div')
   eventList.id = "event-list"
-  
+
   // Iterating through each event
   data.forEach( element => {
+    // console.log(element)
     // Creating the card div
     let eventContainer = document.createElement('div')
     eventContainer.className = "card mt-2"
     eventContainer.style.width = "40%"
     // Creating the image
     let eventImage = document.createElement('img')
-    eventImage.src = element.img;
-    eventImage.className = "card-img-top"
+
+    console.log(element.image_url)
+    eventImage.src = element.image_url;
+    eventImage.className = "event-image"
+
     // Creating the name
     let cardText = document.createElement('div')
     cardText.className = "card-body"
@@ -66,7 +81,24 @@ function generateEvents(data) {
   })
   mainPage.appendChild(eventList)
   fullPage.appendChild(mainPage)
+  attendeeList(data)
 }
+
+// everything you need to know about ATTENDEES
+
+function attendeeList(data){
+  data.forEach(events=>{
+    events.attendees.forEach(attendee=>{
+      const attendeeListItem = document.createElement('div')
+      attendeeListItem.innerHTML =
+      `<img src="${attendee.image_url}" alt="${attendee.name}">
+      <h3>${attendee.name}</h3>`
+      attendeeList.appendChild(attendeeListItem)
+    })
+  })
+}
+
+
 
 // User generated event
 function createEventForm() {
@@ -96,9 +128,9 @@ function createEventForm() {
 
   let form = document.getElementById('event-creation-form');
   let eventList = document.getElementById('event-list')
-  
+
   form.addEventListener('submit', (e) => {
-    debugger
+    // debugger
     let formName = document.getElementById('formNameInput').value;
     let formImage = document.getElementById('formImageInput').value;
     let formDate = document.getElementById('formDateInput').value;
@@ -110,7 +142,7 @@ function createEventForm() {
           'Content-Type': 'application/json'
         },
         method:"POST",
-        body: JSON.stringify({name: formName, img: formImage, date: formDate, description: formDescription})
+        body: JSON.stringify({name: formName, image_url: formImage, date: formDate, description: formDescription})
       })
       .then(() =>{
         fullPage.className = ""
@@ -118,7 +150,7 @@ function createEventForm() {
         eventList.innerHTML = ""
         fetchData(BASE_URL)
       })
-    
+
   })
 
 }
