@@ -47,7 +47,7 @@ function generateEvents(data) {
     // console.log(element)
     // Creating the card div
     let eventContainer = document.createElement('div')
-    eventContainer.className = "card"
+    eventContainer.className = "card mt-2"
     eventContainer.style.width = "40%"
     // Creating the image
     let eventImage = document.createElement('img')
